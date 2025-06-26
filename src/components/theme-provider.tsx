@@ -46,7 +46,9 @@ export function ThemeProvider({
         setTheme(storedTheme);
       }
     } catch (e) {
-      // localStorage is not available
+      console.log("LocalStorage is not available, using default theme.");
+      // Fallback to default theme if localStorage is not available
+      setTheme(defaultTheme);
     }
   }, [storageKey]);
 
