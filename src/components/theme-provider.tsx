@@ -8,9 +8,7 @@ type ThemeProviderProps = {
   children: React.ReactNode;
   defaultTheme?: Theme;
   storageKey?: string;
-  attribute?: string;
   enableSystem?: boolean;
-  disableTransitionOnChange?: boolean;
 };
 
 type ThemeProviderState = {
@@ -30,9 +28,7 @@ export function ThemeProvider({
   children,
   defaultTheme = "system",
   storageKey = "ui-theme",
-  attribute = "class",
   enableSystem = true,
-  disableTransitionOnChange = true,
   ...props
 }: ThemeProviderProps) {
   const [theme, setTheme] = React.useState<Theme>(defaultTheme);
@@ -46,7 +42,7 @@ export function ThemeProvider({
         setTheme(storedTheme);
       }
     } catch (e) {
-      console.log("LocalStorage is not available, using default theme.");
+      console.log("LocalStorage is not available, using default theme.", e);
       // Fallback to default theme if localStorage is not available
       setTheme(defaultTheme);
     }
@@ -87,7 +83,7 @@ export function ThemeProvider({
       try {
         localStorage.setItem(storageKey, newTheme);
       } catch (e) {
-        // localStorage is not available
+        console.error("Failed to save theme to localStorage:", e);
       }
       setTheme(newTheme);
     },
